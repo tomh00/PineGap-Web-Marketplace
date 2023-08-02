@@ -1,0 +1,12 @@
+Station_Name,District,telephone_number,east,north,Object_ID,Address1,County,Eircode,Website
+Sligo Garda Station (HQ),Sligo,07191 57000,169357.0088,335717.5615,1,Pearse Road,Co.Sligo,F91 E372,www.garda.ie/en/contact-us/station-directory/sligo.html
+Collooney Garda Station,Sligo,07191 67122,168245.0322,326317.3131,2,Boyle Road,Co.Sligo,F91 ER85,www.garda.ie/en/contact-us/station-directory/collooney.html
+Ballymote Garda Station,Ballymote,07191 83333,166268.4884,315639.7709,3,O'Connell Street,Co.Sligo,F56 KF84,www.garda.ie/en/contact-us/station-directory/ballymote.html
+Tubbercurry Garda Station,Ballymote,07191 85002,151958.2528,311617.808,4,Teeling Street,Co.Sligo,F91 WR67,www.garda.ie/en/contact-us/station-directory/tubbercurry.html
+Gurteen Garda Station,Ballymote,07191 82002,166223.0317,304959.0283,5,Rathmadder,Co.Sligo,F56 FN77,www.garda.ie/en/contact-us/station-directory/gurteen.html
+Coolaney Garda Station,Sligo,07191 67222,160653.1437,324984.9531,6,Coolaney,Co.Sligo,F56 FH28,www.garda.ie/en/contact-us/station-directory/coolaney.html
+Grange Garda Station,Sligo,07191 63144,166217.8517,349535.2473,7,Main Street,Co.Sligo,F91 H336,www.garda.ie/en/contact-us/station-directory/grange.html
+Riverstown Garda Station,Ballymote,07191 65122,173902.9466,320124.4258,8,Copperhill,Co.Sligo,F52 PY26,www.garda.ie/en/contact-us/station-directory/riverstown.html
+Skreen Garda Station,Sligo,07191 66662,153077.7354,333069.8034,9,Leekfield,Co.Sligo,F91 Y225,www.garda.ie/en/contact-us/station-directory/skreen.html
+Enniscrone Garda Station,Ballina,096-36103,129036.0058,329982.7058,10,Main Street,Co.Sligo,F26 XP65,www.garda.ie/en/contact-us/station-directory/enniscrone.html
+Rosses Point Garda Station,Sligo,07191 77143,164474.0928,339759.5766,11,Ballyweelin,Co.Sligo,F91 K167,www.garda.ie/en/contact-us/station-directory/rosses-point.html

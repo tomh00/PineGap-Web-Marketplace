@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="Ethanstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    <script>
+        function setDiscount(){
+            // set codes
+            var tenPCodes = ['PINEVALLEY10', 'TOM10', 'CONOR10']
+            var twentyPCodes = ['PINEVALLEY20', 'FERAS20']
+            var thirtyPCodes = ['PINEVALLEY30', 'ETHAN30']
+
+            // get entered code
+            var enteredCode = document.getElementById("discountCode").value;
+            var percentDiscount = 0;
+
+            document.getElementById("noDiscountMsg").innerHTML = "";
+            // check entered code
+            if(tenPCodes.includes(enteredCode)){
+                percentDiscount = 10;
+                document.getElementById("noDiscountMsg").innerHTML = "<span style='color: green;'> 10% Discount applied! </span>";
+            }
+            else if (twentyPCodes.includes(enteredCode)){
+                percentDiscount = 20;
+                document.getElementById("noDiscountMsg").innerHTML = "<span style='color: green;'> 20% Discount applied! </span>";
+            }
+            else if (thirtyPCodes.includes(enteredCode)){
+                percentDiscount = 30;
+                document.getElementById("noDiscountMsg").innerHTML = "<span style='color: green;'> 30% Discount applied! </span>";
+            }
+            else {document.getElementById("noDiscountMsg").innerHTML = "<span style='color: red;'> Not a valid discount code! </span>"}
+            var absoluteDiscount = ((percentDiscount/100) * [[${subtotal}]]).toFixed(2)
+            document.getElementById("discount").innerHTML = absoluteDiscount;
+
+            calculateTotal(absoluteDiscount);
+        }
+    </script>
+
+    <!-- Billing and payment information form -->
+    <div class="split left">
+        <div class="box">
+            <h1>Shipping information <i class="fa fa-money" style="font-size:24px"></i></h1>
+
+            <!-- Billing information -->
+            <form method="POST" action="/checkout">
+                <h3>Billing Address</h3>
+                <label for="fName"><i class="fa fa-user"></i> First Name</label>
+                <input type="text" id="fName" name="fName" placeholder="Joe" required>
+                <label for="lastname">Last Name</label>
+                <input type="text" id="lastname" name="lName" placeholder="Bloggs" required>
+                <label for="address1"><i class="fa fa-address-card-o"></i> Address Line 1</label>
+                <input type="text" id="address1" name="addressL1" placeholder="123 Fake Street," required>
+                <label for="address2">Address Line 2</label>
+                <input type="text" id="address2" name="addressL2" placeholder="Fake Avenue" required>
+                <label for="province">Province</label>
+                <select id="province" name="province" required>
+                    <option value="Leinster">Leinster</option>
+                    <option value="Munster">Munster</option>
+                    <option value="Ulster">Ulster</option>
+                    <option value="Connacht">Connacht</option>
+                </select>
+                <label for="email"><i class="fa fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" name="email" placeholder="joebloggs@gmail.com" required>
+                <label for="discount">Discount Code (Optional)</label>
+                <input type="text" id="discountCode" onkeyup="setDiscount()" name="discountCode" placeholder="Enter code">
+                <span id="noDiscountMsg"></span>
+
+                <!-- Payment info -->
+                <h3>Payment</h3>
+                <label>Accepted Cards</label>
+                <div>
+                    <i style="font-size:24px" class="fa">&#xf1f0;</i>
+                    <i style="font-size:24px" class="fa">&#xf1f1;</i>
+                </div>
+                <label for="name">Name on Card</label>
+                <input type="text" id="name" name="cardName" placeholder="Joe Bloggs" required>
+                <label for="number">Card number</label>
+                <input type="text" id="number" name="cardNumber" placeholder="1111-2222-3333-4444" required>
+                <label for="expmonth">Exp Month</label>
+                <input type="number" id="expmonth" name="expmonth" placeholder="08" required>
+                <label for="expyear">Exp Year</label>
+                <input type="number" id="expyear" name="expyear" placeholder="25" required>
+                <label for="cvv">CVV</label>
+                <input type="number" id="cvv" name="cvv" placeholder="123" required>
+                <button type="submit" id="view_btn">Checkout</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- item summary (cart) -->
+    <div class="split right">
+        <div class="box">
+            <h1>Your Cart <i class="fa fa-shopping-cart"></i></h1>
+            <table>
+                <tr th:each="dataPoint : ${shoppingCart}">
+                    <td th:text="${dataPoint.key.name}"></td>
+                    <td th:text="${dataPoint.key.description}"></td>
+                    <td th:text="${dataPoint.value}"></td>
+                    <td>
+                        <a th:href="@{/viewDataSet/{id}(id=${dataPoint.key.id})}">
+                            <button type="button" id="view_btn">
+                                View
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Price breakdown -->
+        <div class="box">
+            <h1>Order Summary</h1>
+            <table class="table2" method="POST" action="/checkout">
+                <tr>
+                    <td>Subtotal:</td>
+                    <td th:text="${subtotal}"></td>
+                </tr>
+                <tr>
+                    <td>Discount:</td>
+                    <td id="discount">0</td>
+                </tr>
+                <tr>
+                    <th>Total:</th>
+                    <td th:text="${subtotal}" id = "total"></td>
+                </tr>
+            </table>
+        </div>
+        <a th:href="@{/}">
+            <button type="button" id="view_btn" style="margin-bottom: 5px">
+                Catalogue
+            </button>
+        </a>
+        <a th:href="@{/shoppingcart}">
+            <button type="button" id="view_btn">
+                Shopping Cart
+            </button>
+        </a>
+    </div>
+
+    <!-- script to calculate total with discount -->
+    <script>
+        function calculateTotal(discount){
+            document.getElementById("total").innerHTML = ([[${subtotal}]] - discount).toFixed(2);
+        }
+    </script>
+</body>
+</html>

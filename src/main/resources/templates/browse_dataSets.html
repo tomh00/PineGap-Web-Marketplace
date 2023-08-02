@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+   <head>
+      <title>Browse Datasets</title>
+      <link rel="stylesheet" href="/Ethanstyle.css">
+      <meta name="Page Description" content="Browsing Datasets for Pinegap">
+      <meta property="og:title" content="Datasets">
+      <meta property="og:description" content="Browsing Datasets for Pinegap">
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100;300&display=swap" rel="stylesheet">
+   </head>
+   <body>
+      <div id = "main">
+         <div class="super">
+            <div class="nav">
+               <ul>
+                  <li><a href="/"> Catalogue </a><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                     <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                   </svg></li>
+                  <li><a href="/shoppingcart"> Shopping Cart </a>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                   </svg></li>
+                   <li th:if="${#request.userPrincipal} != null"><a href="/logout">Logout </a>
+                   <li th:if="${#request.userPrincipal} != null"><b>[[${#request.userPrincipal.principal.fullName}]] </b></li>
+                   <li th:if="${#request.userPrincipal} != null"><a href="/orderHistory">Order history </a></li>
+                   <li th:if="${#request.userPrincipal} != null"><a href="/adminMenu">Admin Menu </a></li>
+                   <li th:if="${#request.userPrincipal} == null"><a href="/login">Login</a>
+                  <li th:if="${#request.userPrincipal} == null"><a href="/register">Register</a>
+               </ul>
+            </div>
+         </div>
+         <div class="super">
+            <div class="container">
+               <div class="container-form">
+                  <table style="width: 700px;">
+                     <p th:if="${param.datasetHidden != null and param.datasetHidden[0] == 'yes'}">DataSet hidden successfully</p>
+                     <p th:if="${param.datasetHidden != null and param.datasetHidden[0] == 'no'}">DataSet unhidden successfully</p>
+                     <thead>
+                        <tr>
+                           <th> Name: </th>
+                           <th> Description: </th>
+                           <th> More information: </th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr th:if="${dataSets.isEmpty()}">
+                           <td colspan="4"> There is no DataSets yet.</td>
+                        </tr>
+                        <tr th:each="data : ${dataSetPage.content}">
+
+                           <div th:if="${data.isVisible() == true}">
+                              <td th:text="${data.Name}"></td>
+                              <td th:text="${data.Description}"></td>
+                              <td><button type="button" id="view_btn" 
+                                 th:onclick="|window.location.href='@{/viewDataSet/{id}(id=${data.id})}'|">View DataSet</button></td>
+                              </div>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <div th:if="${dataSetPage.totalPages > 0}" class="pagination">
+                     <a th:inline="text"  th:each="pageNumber : ${pageNumbers}"
+                        th:text="${pageNumber}"
+                        th:href="@{/(size=${dataSetPage.size}, page=${pageNumber})}"
+                        th:class="${pageNumber== dataSetPage.number + 1} ? active">
+                     </a>
+                     <div th:if="${currentPageAsInt == pageNumbers.size() and currentPageAsInt &gt; 1 }">
+                        <div class="pagination">
+                           <button type="button"><a th:href="@{/(size=${dataSetPage.size}, page=${currentPageAsInt-1})}">Previous Page</a></button>
+                        </div>
+                     </div>
+                     <div th:if="${currentPageAsInt &lt; pageNumbers.size()}">
+                        <div class="pagination">
+                           <button type="button"><a th:href="@{/(size=${dataSetPage.size}, page=${currentPageAsInt+1})}">Next Page</a></button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <footer>
+         <p>&copy; PineGap 2022</p>
+      </footer>
+   </body>
+</html>

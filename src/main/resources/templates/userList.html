@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>List Users</title>
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/Ethanstyle.css">
+	<meta name="Page Description" content="Browsing Datasets for Pinegap">
+	<meta property="og:title" content="Datasets">
+	<meta property="og:description" content="Browsing Datasets for Pinegap">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100;300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+	<div id = "main">
+		<div class="super">
+            <div class="nav">
+            		<ul>
+						<li><b>[[${#request.userPrincipal.principal.fullName}]] </b></li>
+						<li><a th:href="@{/users}">Manage Users</a></li>
+						<li><a th:href="@{/register}">Register</a></li>
+						<li><a th:href="@{/login}">Login</a></li>
+						<li th:if="${#request.userPrincipal} != null"><a href="/orderHistory">Order history </a></li>
+						<li><form th:action="@{/logout}" method="post">
+							<input type="submit" value="Sign Out" />
+						</form></li>
+					</ul>
+            </div>
+		</div>
+    	<div class="super">
+			<div class="container">
+				<div class="container-form">
+					<table style="width: 700px;">
+								<thead>
+									<tr>
+										<th>User ID</th>
+										<th>E-mail</th>
+										<th>First Name</th>
+										<th>Last Name</th>
+										<th>Roles</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+										<tr th:each="user: ${listUsers}">
+											<td th:text="${user.id}">User ID</td>
+											<td th:text="${user.email}">E-mail</td>
+											<td th:text="${user.firstName}">First Name</td>
+											<td th:text="${user.lastName}">Last Name</td>
+											<td th:text="${user.roles}">Roles</td>
+											<td><a th:href="@{'/users/edit/' + ${user.id}}">Edit</a></td>
+										</tr>
+								</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<p>&copy; PineGap 2022</p>
+	</footer>
+</body>
+</html>
